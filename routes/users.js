@@ -1,5 +1,5 @@
 const express = require('express');
-// const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi } = require('celebrate');
 const {
   getAllUsers,
   getUser,
@@ -10,8 +10,21 @@ const {
 const router = express.Router();
 
 router.get('/', getAllUsers);
-router.get('/:userId', getUser);
-router.patch('/me', updateUser);
-router.patch('/me/avatar', updateUserAvatar);
+router.get('/:userId', celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().alphanum(),
+  }).unknown(true),
+}), getUser);
+router.patch('/me', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30).required(),
+    about: Joi.string().min(2).max(30).required(),
+  }),
+}), updateUser);
+router.patch('/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().uri().required(),
+  }),
+}), updateUserAvatar);
 
 module.exports = router;

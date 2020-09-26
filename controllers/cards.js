@@ -5,10 +5,7 @@ const BadRequestError = require('../errors/bad-request-error');
 const getCards = (req, res, next) => {
   Card.find({})
     .populate('owner')
-    .then((users) => {
-      console.log('get cards');
-      return res.status(200).send(users);
-    })
+    .then((users) => res.status(200).send(users))
     .catch(next);
 };
 

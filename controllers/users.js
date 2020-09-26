@@ -4,12 +4,9 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
 
-const JWT_SECRET = 'super-secret-key';
-
 const getAllUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
-      console.log('get users');
       res.status(200).send(users);
     })
     .catch(next);
@@ -114,7 +111,7 @@ const login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        JWT_SECRET,
+        'super-secret-secret',
         { expiresIn: '7d' },
       );
 

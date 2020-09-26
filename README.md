@@ -1,3 +1,29 @@
-# react-mesto-api-full
-Репозиторий для полноценного API проекта Mesto, включающий авторизацию и регистрацию пользователей, операции с карточками и пользователями.  
-Пожалуйста, прикрепите в это описание ссылку на репозиторий с готовым React-приложением, использующим этот API и ссылку на сайт, размещенный на Яндекс.Облаке.
+# Mesto
+
+An educational REST API for yandex.praktikum, built with Express, connected to MongoDB.
+
+## Installation
+You'll need node and npm installed globally on your machine, homebrew package manager as well.  
+To interact with database use mongodb compass, postman.
+```
+$ git clone https://github.com/abatushkova/react-mesto-api-full.git
+$ cd react-mesto-api-full
+```
+
+## Start the local server
+```
+$ npm run start
+```
+
+## Start the local server with hot-reload
+```
+$ npm run dev
+```
+
+## Credits
+Alena Batushkova - junior web developer
+
+## Links
+IP 130.193.50.209  
+DNS api.batushkova.students.nomoreparties.co  
+[React app](https://batushkova.students.nomoreparties.co/)

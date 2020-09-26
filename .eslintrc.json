@@ -6,6 +6,7 @@
     "no-underscore-dangle": ["warn", {
       "allow": ["_id"]
     }],
-    "no-console": "off"
+    "no-console": "off",
+    "func-names": "off"
   }
 }

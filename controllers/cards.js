@@ -1,6 +1,7 @@
 const Card = require('../models/card');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
+const ForbiddenError = require('../errors/forbidden-error');
 
 const getCards = (req, res, next) => {
   Card.find({})
@@ -28,11 +29,18 @@ const createCard = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   Card.findOneAndDelete({ _id: req.params.cardId })
     .orFail()
-    .then((card) => res.status(200).send(card))
+    .then((card) => {
+      if (card.owner._id !== req.user._id) {
+        next(new ForbiddenError('У вас нет прав на удаление карточки'));
+      }
+
+      return res.status(200).send(card);
+    })
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Нет карточки с таким id'));
       }
+
       if (err.name === 'CastError') {
         next(new BadRequestError('Запрос на удаление карточки не прошел валидацию'));
       }
@@ -53,6 +61,7 @@ const likeCard = (req, res, next) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Нет карточки с таким id'));
       }
+
       if (err.name === 'CastError') {
         next(new BadRequestError('Запрос на лайк карточки не прошел валидацию'));
       }
@@ -73,6 +82,7 @@ const dislikeCard = (req, res, next) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Нет карточки с таким id'));
       }
+
       if (err.name === 'CastError') {
         next(new BadRequestError('Запрос на дизлайк карточки не прошел валидацию'));
       }

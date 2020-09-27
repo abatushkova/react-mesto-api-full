@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
+const ConflictError = require('../errors/conflict-error');
+const JWT_SECRET = require('../utils/constants');
 
 const getAllUsers = (req, res, next) => {
   User.find({})
@@ -20,6 +22,7 @@ const getUser = (req, res, next) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Нет пользователя с таким id'));
       }
+
       if (err.name === 'CastError') {
         next(new BadRequestError('Запрос найти пользователя не прошел валидацию'));
       }
@@ -38,15 +41,19 @@ const createUser = (req, res, next) => {
   } = req.body;
 
   return bcrypt.hash(password, 10)
-    .then((hash) => User.create({
+    .then(() => User.create({
       name,
       about,
       avatar,
       email,
-      password: hash,
+      password,
     }))
     .then((user) => res.status(200).send(user))
     .catch((err) => {
+      if (err.name === 'MongoError' || err.code === '11000') {
+        next(new ConflictError('Пользователь с таким email уже создан'));
+      }
+
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Входные данные создания пользователя не прошли валидацию'));
       }
@@ -73,6 +80,7 @@ const updateUser = (req, res, next) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Нет пользователя с таким id'));
       }
+
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Входные данные обновления профиля не прошли валидацию'));
       }
@@ -96,6 +104,7 @@ const updateUserAvatar = (req, res, next) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Нет пользователя с таким id'));
       }
+
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Входные данные обновления аватар не прошли валидацию'));
       }
@@ -111,7 +120,7 @@ const login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        'super-secret-secret',
+        JWT_SECRET,
         { expiresIn: '7d' },
       );
 

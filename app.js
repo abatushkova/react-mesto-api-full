@@ -3,7 +3,6 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
-
 const { login, createUser } = require('./controllers/users');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
@@ -32,9 +31,9 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(requestLogger);
 
-app.get('/crash-test', () => {
+app.get('/crash-test', (next) => {
   setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
+    next(new Error('Сервер сейчас упадёт'));
   }, 0);
 });
 

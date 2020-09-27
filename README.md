@@ -2,6 +2,9 @@
 
 An educational REST API for yandex.praktikum, built with Express, connected to MongoDB.
 
+## Description
+REST API with functionality to signin, signup, get user or card list, get single user or card, create user or card, edit profile, like-dislike or delete cards.
+
 ## Installation
 You'll need node and npm installed globally on your machine, homebrew package manager as well.  
 To interact with database use mongodb compass, postman.
@@ -25,5 +28,5 @@ Alena Batushkova - junior web developer
 
 ## Links
 IP 130.193.50.209  
-DNS api.batushkova.students.nomoreparties.co  
+Domain name - api.batushkova.students.nomoreparties.co  
 [React app](https://batushkova.students.nomoreparties.co/)

@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/', getAllUsers);
 router.get('/:userId', celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().alphanum(),
+    userId: Joi.string().length(24).hex(),
   }).unknown(true),
 }), getUser);
 router.patch('/me', celebrate({
@@ -23,7 +23,10 @@ router.patch('/me', celebrate({
 }), updateUser);
 router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().uri().required(),
+    avatar: Joi
+      .string()
+      .pattern(/(https?:\/\/)([a-z0-9_\W]+\.)+([a-z0-9_\W]+)+/gmi, 'link')
+      .required(),
   }),
 }), updateUserAvatar);
 

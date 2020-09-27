@@ -22,7 +22,7 @@ router.post('/', celebrate({
     name: Joi.string().min(2).max(30).required(),
     link: Joi
       .string()
-      .pattern(/(https?:\/\/)([a-z0-9_\W]+\.)+([a-z0-9_\W]+)+/gmi, 'link')
+      .pattern(/(https?:\/\/)([a-zA-Z0-9_\W]+\.)+([a-z0-9_\W]+)+/, 'link')
       .required(),
   }),
 }), createCard);

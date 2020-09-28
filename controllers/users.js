@@ -49,8 +49,7 @@ const createUser = (req, res, next) => {
       password: hash,
     }))
     .then((user) => {
-      const freshUser = user;
-      delete freshUser.password;
+      const freshUser = user.hidePasswordSalt();
 
       return res.status(200).send(freshUser);
     })

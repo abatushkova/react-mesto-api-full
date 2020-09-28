@@ -41,14 +41,19 @@ const createUser = (req, res, next) => {
   } = req.body;
 
   return bcrypt.hash(password, 10)
-    .then(() => User.create({
+    .then((hash) => User.create({
       name,
       about,
       avatar,
       email,
-      password,
+      password: hash,
     }))
-    .then((user) => res.status(200).send(user))
+    .then((user) => {
+      const freshUser = user;
+      delete freshUser.password;
+
+      return res.status(200).send(freshUser);
+    })
     .catch((err) => {
       if (err.name === 'MongoError' || err.code === '11000') {
         next(new ConflictError('Пользователь с таким email уже создан'));

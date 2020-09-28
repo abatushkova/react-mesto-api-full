@@ -59,13 +59,13 @@ userSchema.statics.findUserByCredentials = function (email, password) {
 };
 
 userSchema.methods.hidePasswordSalt = function () {
-  const self = this.toObject();
+  const user = this.toObject();
 
-  if (self.password) {
-    delete self.password;
+  if (user.password) {
+    delete user.password;
   }
 
-  return self;
+  return user;
 };
 
 module.exports = mongoose.model('user', userSchema);

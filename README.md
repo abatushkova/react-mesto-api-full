@@ -22,11 +22,3 @@ $ npm run start
 ```
 $ npm run dev
 ```
-
-## Credits
-Alena Batushkova - junior web developer
-
-## Links
-IP 130.193.50.209  
-Domain name - api.batushkova.students.nomoreparties.co  
-[React app](https://batushkova.students.nomoreparties.co/)
